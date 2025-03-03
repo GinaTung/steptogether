@@ -33,3 +33,9 @@ npm run build
 ```sh
 npm run lint
 ```
+### 上傳 dist/ 到 GitHub Pages
+```sh
+npm install -g gh-pages
+npm run build
+gh-pages -d dist
+```
