@@ -1,13 +1,9 @@
-import tailwindcssPrimeui from 'tailwindcss-primeui';
+import tailwindcssPrimeui from "tailwindcss-primeui";
 
 export default {
-  plugins: [tailwindcssPrimeui],
   content: [
-    './public/**/*.html',
-    './src/**/*.{js,jsx,ts,tsx,vue}',
+    "./public/**/*.html",
+    "./src/**/*.{js,jsx,ts,tsx,vue}",
   ],
-  darkMode: false,
-  theme: {
-    extend: {},
-  },
+  plugins: [tailwindcssPrimeui], // 如果你有使用 tailwindcssPrimeui
 };
