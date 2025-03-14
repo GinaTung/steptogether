@@ -7,10 +7,9 @@ import App from "./App.vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";
-// import 'primevue/resources/themes/lara-light-blue/theme.css'; // 選擇主題
-// import 'primevue/resources/primevue.min.css'; // 核心樣式
-// import 'primeicons/primeicons.css'; // 圖標
-// import Button from "primevue/button"
+
+import 'primeicons/primeicons.css'; // 圖標
+import ToastService from 'primevue/toastservice';
 const app = createApp(App);
 
 app.use(createPinia());
@@ -18,7 +17,15 @@ app.use(router);
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
+    // options: {
+    //   // 取消深色模式
+    //   darkModeSelector: false, 
+    //   cssLayer: { // TailwindCSS 和 PrimeVue 的载入顺序设置
+    //     name: 'primevue',
+    //     order: 'tailwind-base, primevue, tailwind-utilities',
+    //   },
+    // },
   },
 });
-// app.component('Button', Button);
+app.use(ToastService);
 app.mount("#app");
