@@ -17,14 +17,14 @@ app.use(router);
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
-    // options: {
-    //   // 取消深色模式
-    //   darkModeSelector: false, 
-    //   cssLayer: { // TailwindCSS 和 PrimeVue 的载入顺序设置
-    //     name: 'primevue',
-    //     order: 'tailwind-base, primevue, tailwind-utilities',
-    //   },
-    // },
+    options: {
+      // 取消深色模式
+      darkModeSelector: false, 
+      cssLayer: { // TailwindCSS 和 PrimeVue 的载入顺序设置
+        name: 'primevue',
+        order: 'tailwind-base, primevue, tailwind-utilities',
+      },
+    },
   },
 });
 app.use(ToastService);
