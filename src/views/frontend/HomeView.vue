@@ -13,7 +13,8 @@
               <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
                 <a
                   v-ripple
-                  class="no-border flex items-center justify-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2 rounded-sm"
+                  class="no-border flex items-center justify-items-center
+                  md:justify-items-start cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2 rounded-sm"
                   :href="href"
                   :class="{ 'bg-[#EF6C00] text-white': route.path === item.route }"
                   @click="navigate"
@@ -25,7 +26,8 @@
               <a
                 v-else
                 v-ripple
-                class="flex items-center justify-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2 rounded-sm"
+                class="flex items-center justify-items-center
+                  md:justify-items-start cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2 rounded-sm"
                 :class="{ 'bg-[#EF6C00] text-white': route.path === item.route }"
                 :href="item.url"
                 :target="item.target"
@@ -56,8 +58,12 @@
       </div>
     </div>
 
-    <!-- 右側區塊 (可滾動) -->
-    <div class="flex-1 overflow-y-auto mt-1" :class="{ 'sm:ml-20 md:ml-75': menuVisible, 'ml-0': menuVisible }">
+    <!-- 中側區塊 (可滾動) -->
+    <div class="flex-1 overflow-y-auto pt-1"
+      :class="{
+        'sm:ml-26 md:ml-75 xl:mr-75': menuVisible, // 左右兩側留白
+        'ml-0 mr-0': !menuVisible
+      }">
       <div class="bg-[#d0d6dd26] p-3 inset-y-3">
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-black text-xl">Upcoming Friends</h3>
@@ -90,125 +96,59 @@
             </div>
           </template>
           <template #icons>
-            <Button icon="pi pi-ellipsis-v" severity="secondary" rounded text @click="toggle" />
-            <Menu ref="menu" id="config_menu" :model="postList" popup />
-          </template>
-          <div class="flex my-3">
-            <div class="flex gap-4 w-full">
-              <!-- 第一張圖片 -->
-              <div
-                class="bg-[rgba(208,214,221,0.15)] p-3 rounded-lg w-1/2 flex items-center justify-center"
-              >
-                <img
-                  :src="springFirst"
-                  alt="springFirst"
-                  class="w-full h-auto max-h-90 rounded-lg"
-                />
-              </div>
+            <div class="relative">
+            <!-- 按鈕 -->
+            <button
+              @click="toggleMenu"
+              class="py-2 px-4 cursor-pointer"
+              type="button"
+            >
+              <i class="pi pi-ellipsis-v"></i>
+            </button>
 
-              <!-- 第二張圖片 -->
-              <div
-                class="bg-[rgba(208,214,221,0.15)] p-3 rounded-lg w-1/2 flex items-center justify-center"
-              >
-                <img
-                  :src="springSecond"
-                  alt="springSecond"
-                  class="w-full h-auto max-h-90 rounded-lg"
-                />
-              </div>
-            </div>
+            <!-- 主菜單 -->
+            <ul
+              v-if="isMenuOpen"
+              :class="menuPositionClass"
+              role="menu"
+              ref="menuRef"
+              class="absolute z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg shadow-sm focus:outline-none"
+            >
+              <li v-for="(item,index) in postList" :key="index"
+              role="menuitem" class="cursor-pointer text-slate-800 text-sm flex w-full items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100">
+             <i :class="item.icon"></i>&ensp;{{ item.label }}
+              </li>
+            </ul>
+          </div>
+          </template>
+          <div class="my-3">
+            <PostImgView />
           </div>
 
-          <p class="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.
-            <Button severity="secondary" label="more" @click="toggle" />
-          </p>
-        </Panel>
-        <Panel class="p-5 mb-5">
-          <template #header>
-            <div class="flex items-center gap-2">
-              <Avatar
-                image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-                shape="circle"
-              />
-              <div class="flex flex-col">
-                <span class="font-bold">Amy Elsner</span>
-                <span> 4 Feb 2025 at 10:50</span>
-              </div>
-            </div>
-          </template>
-          <template #footer>
-            <div class="flex flex-wrap items-center justify-between gap-4">
-              <div class="flex items-center gap-2">
-                <Button icon="pi pi-heart" rounded text></Button>
-                <Button icon="pi pi-comment" severity="secondary" rounded text></Button>
-                <Button icon="pi pi-send" severity="secondary" rounded text></Button>
-              </div>
-              <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
-            </div>
-          </template>
-          <template #icons>
-            <Button icon="pi pi-ellipsis-v" severity="secondary" rounded text @click="toggle" />
-            <Menu ref="menu" id="config_menu" :model="postList" popup />
-          </template>
-          <div class="flex my-3">
-            <div class="flex gap-4 w-full">
-              <!-- 第一張圖片 -->
-              <div
-                class="bg-[rgba(208,214,221,0.15)] p-3 rounded-lg w-1/2 flex items-center justify-center"
-              >
-                <img
-                  :src="springFirst"
-                  alt="springFirst"
-                  class="w-full h-auto max-h-90 rounded-lg"
-                />
-              </div>
-
-              <!-- 第二張圖片 -->
-              <div
-                class="bg-[rgba(208,214,221,0.15)] p-3 rounded-lg w-1/2 flex items-center justify-center"
-              >
-                <img
-                  :src="springSecond"
-                  alt="springSecond"
-                  class="w-full h-auto max-h-90 rounded-lg"
-                />
-              </div>
-            </div>
-          </div>
-
-          <p class="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.
-            <Button severity="secondary" label="more" @click="toggle" />
-          </p>
         </Panel>
       </div>
+    </div>
+  <!-- 右側區塊 (固定) -->
+    <div>
+      <SidebarView class="sm:w-20 md:w-70 h-[calc(100vh-56px)] bg-[#d0d6dd26] flex flex-col fixed right-0 top-[56px] bottom-3 inset-y-3 m-3 hidden xl:block"
+      v-if="menuVisible"/>
     </div>
   </div>
 </template>
 
 <script setup>
 import loginSocial from "@/assets/images/login-social-img.jpg";
-import springFirst from "@/assets/images/spring_first.jpg";
-import springSecond from "@/assets/images/spring_second.jpg";
+// import springFirst from "@/assets/images/spring_first.jpg";
+// import springSecond from "@/assets/images/spring_second.jpg";
 import { storeToRefs } from "pinia";
 import { useRouter, useRoute } from "vue-router";
-import { ref } from "vue";
+import { ref,computed, onMounted, onBeforeUnmount } from "vue";
 
 const router = useRouter();
 const route = useRoute();
 import { useHomeStore } from "@/stores/useHomeStore";
-
+import PostImgView from "@/components/PostImgView.vue";
+import SidebarView from "@/components/SidebarView.vue";
 const homeStore = useHomeStore();
 const { menuVisible } = storeToRefs(homeStore); // 這樣 `menuVisible` 會保持響應式
 
@@ -272,7 +212,7 @@ const pageLikeList = ref([
 ]);
 
 const menu = ref(null);
-
+const menuRef = ref(null); // 用來參考菜單
 const postList = ref([
   {
     label: "儲存貼文",
@@ -287,9 +227,35 @@ const postList = ref([
     icon: "pi pi-bookmark",
   },
 ]);
+// 點擊外部關閉菜單
+const handleClickOutside = (event) => {
+  if (menuRef.value && !menuRef.value.contains(event.target) && !event.target.closest('button')) {
+    isMenuOpen.value = false;
+  }
+};
 
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 const toggle = (event) => {
   menu.value.toggle(event);
+};
+// 定義變數和狀態
+const isMenuOpen = ref(false); // 菜單開關
+const menuPosition = ref('left'); // 菜單顯示位置，預設為 'bottom'
+
+// 計算屬性來控制菜單位置的 class
+const menuPositionClass = computed(() => {
+  return menuPosition.value === 'left' ? 'top-full right-0' : 'top-0 right-full';
+});
+
+// 切換菜單顯示狀態
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
 };
 </script>
 
@@ -307,4 +273,5 @@ const toggle = (event) => {
 .text-bg {
   background: #000;
 }
+
 </style>

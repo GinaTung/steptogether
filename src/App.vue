@@ -1,11 +1,15 @@
 <template>
-  <div class=" flex flex-col">
-    <Header v-if="showHeaderFooter" />
-    <div class="flex flex-1 overflow-hidden">
+  <div class="flex flex-col min-h-screen">
+    <!-- 固定 Header -->
+    <Header v-if="showHeaderFooter" class="fixed top-0 left-0 right-0 z-50 bg-[#c1c6cd66]" />
+    
+    <!-- 主要內容區，增加 padding-top 以避免被 Header 擋住 -->
+    <div class="flex flex-1 overflow-hidden pt-[60px]">
       <router-view />
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { computed } from 'vue';

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center m-3">
+  <div class="flex justify-between items-center p-3">
     <div class="flex item-center">
       <Button @click="toggleMenu"
         class="text-white bg-[#EF6C00] rounded-lg hover:bg-gradient-to-r hover:from-[#272F43] hover:to-[#1B2230] transition-all duration-300 p-2 cursor-pointer hidden md:block"
