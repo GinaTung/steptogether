@@ -1,4 +1,3 @@
-
 <template>
   <div class="card">
       <Carousel :value="products" :numVisible="2" :numScroll="1" :responsiveOptions="responsiveOptions" circular :autoplayInterval="5000">
@@ -21,6 +20,14 @@
               mollit anim id est laborum.
               <Button severity="secondary" label="more" @click="toggle" />
             </p>
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-center gap-2">
+                <Button icon="pi pi-heart" rounded text></Button>
+                <Button icon="pi pi-comment" severity="secondary" rounded text></Button>
+                <Button icon="pi pi-send" severity="secondary" rounded text></Button>
+              </div>
+              <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
+            </div>
   </div>
 </template>
 

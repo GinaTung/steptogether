@@ -68,8 +68,8 @@
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-black text-xl">Upcoming Friends</h3>
           <div>
-            <Button icon="pi pi-microsoft" severity="secondary" @click="toggle" class="mx-1" />
-            <Button icon="pi pi-list" severity="secondary" @click="toggle" class="mx-1" />
+            <Button icon="pi pi-microsoft" severity="secondary" @click="toggleBlock('Block')" class="mx-1" />
+            <Button icon="pi pi-list" severity="secondary" @click="toggleList('List')" class="mx-1" />
           </div>
         </div>
         <Panel class="p-5 mb-5">
@@ -86,14 +86,14 @@
             </div>
           </template>
           <template #footer>
-            <div class="flex flex-wrap items-center justify-between gap-4">
+            <!-- <div class="flex flex-wrap items-center justify-between gap-4">
               <div class="flex items-center gap-2">
                 <Button icon="pi pi-heart" rounded text></Button>
                 <Button icon="pi pi-comment" severity="secondary" rounded text></Button>
                 <Button icon="pi pi-send" severity="secondary" rounded text></Button>
               </div>
               <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
-            </div>
+            </div> -->
           </template>
           <template #icons>
             <div class="relative">
@@ -122,7 +122,8 @@
           </div>
           </template>
           <div class="my-3">
-            <PostImgView />
+            <PostImgListView v-show="changeBlock === 'List'" />
+            <PostImgBlockView v-show="changeBlock === 'Block'" />
           </div>
 
         </Panel>
@@ -147,7 +148,8 @@ import { ref,computed, onMounted, onBeforeUnmount } from "vue";
 const router = useRouter();
 const route = useRoute();
 import { useHomeStore } from "@/stores/useHomeStore";
-import PostImgView from "@/components/PostImgView.vue";
+import PostImgListView from "@/components/PostImgListView.vue";
+import PostImgBlockView from "@/components/PostImgBlockView.vue";
 import SidebarView from "@/components/SidebarView.vue";
 const homeStore = useHomeStore();
 const { menuVisible } = storeToRefs(homeStore); // 這樣 `menuVisible` 會保持響應式
@@ -210,8 +212,15 @@ const pageLikeList = ref([
     text: "World of Mountains",
   },
 ]);
+const changeBlock = ref('Block'); // 預設顯示 A 區塊
 
-const menu = ref(null);
+const toggleBlock = () => {
+  changeBlock.value = 'Block';
+};
+const toggleList = () => {
+  changeBlock.value = 'List';
+};
+
 const menuRef = ref(null); // 用來參考菜單
 const postList = ref([
   {
@@ -241,9 +250,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
 });
-const toggle = (event) => {
-  menu.value.toggle(event);
-};
+
 // 定義變數和狀態
 const isMenuOpen = ref(false); // 菜單開關
 const menuPosition = ref('left'); // 菜單顯示位置，預設為 'bottom'
