@@ -18,9 +18,9 @@
       <InputText placeholder="Search" type="text" class="w-[250px] border border-black rounded-md px-2 hidden md:block"
         unstyled />
 
-      <Button label="SHORE POST"
+        <Button label="SHORE POST"
         class="p-2 text-white bg-[#EF6C00] rounded-lg hover:bg-gradient-to-r hover:from-[#272F43] hover:to-[#1B2230] transition-all duration-300 cursor-pointer hidden md:block"
-        unstyled />
+        unstyled @click="visible = true" />
     </div>
 
 
@@ -44,6 +44,7 @@
       </Menu>
     </div>
 
+    <AddSharePostView v-model:visible="visible" />
   </div>
 </template>
 
@@ -52,6 +53,8 @@ import { ref } from 'vue';
 import { useHomeStore } from "@/stores/useHomeStore";
 import { useRouter } from "vue-router";
 import footstepIcon from "@/assets/images/footstep.svg";
+import AddSharePostView from './AddSharePostView.vue';
+
 const router = useRouter();
 const homeStore = useHomeStore();
 const toggleMenu = homeStore.toggleMenu;
@@ -77,7 +80,7 @@ const menuList = ref([
   { label: 'Logout', icon: 'pi pi-sign-out' },
 ]);
 
-
+const visible = ref(false);
 </script>
 <style>
 .p-tieredmenu-item-link {
