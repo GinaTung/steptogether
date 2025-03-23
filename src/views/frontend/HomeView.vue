@@ -174,7 +174,7 @@ const pageLikeList = ref([
     text: "World of Mountains",
   },
 ]);
-const changeBlock = ref("Block"); // 預設顯示 A 區塊
+const changeBlock = ref("List"); // 預設顯示 A 區塊
 
 const toggleBlock = () => {
   changeBlock.value = "Block";

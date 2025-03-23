@@ -13,10 +13,21 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-2">
           <Button icon="pi pi-heart" rounded text></Button>
-          <Button icon="pi pi-comment" severity="secondary" rounded text></Button>
+          <Button icon="pi pi-comment" severity="secondary" rounded @click="toggleComment"></Button>
           <Button icon="pi pi-send" severity="secondary" rounded text></Button>
         </div>
         <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
+      </div>
+      <!-- 留言區塊 -->
+      <div v-if="isCommentVisible">
+        <div class="flex items-center">
+          <span class="me-3"><i class="pi pi-user"></i></span>
+          <Textarea v-model="value" variant="filled" rows="1" cols="30"
+            class="w-full bg-[#d0d6dd26] border-1 rounded-lg p-3 my-3" placeholder="What’s on your mind ?" />
+          <Button class="flex items-center cursor-pointer ms-3" unstyled
+            ><i class="pi pi-send"></i></Button>
+        </div>
+
       </div>
     </template>
     <template #icons>
@@ -70,6 +81,7 @@
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
 import springFirst from "@/assets/images/spring_first.jpg";
 import springSecond from "@/assets/images/spring_second.jpg";
+
 onMounted(() => {
   products.value = [
     {
@@ -160,6 +172,12 @@ const handleClickOutside = (event) => {
   if (menuRef.value && !menuRef.value.contains(event.target) && !event.target.closest('button')) {
     isMenuOpen.value = false;
   }
+};
+
+const isCommentVisible = ref(false);
+
+const toggleComment = () => {
+  isCommentVisible.value = !isCommentVisible.value;
 };
 
 onMounted(() => {

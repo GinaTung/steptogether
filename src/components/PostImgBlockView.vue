@@ -18,7 +18,7 @@
           <div class="flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-2">
               <Button icon="pi pi-heart" rounded text></Button>
-              <Button icon="pi pi-comment" severity="secondary" rounded text></Button>
+              <Button icon="pi pi-comment" severity="secondary" rounded @click="visible = true"></Button>
               <Button icon="pi pi-send" severity="secondary" rounded text></Button>
             </div>
             <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
@@ -89,6 +89,7 @@
           </div>
         </div>
       </Panel>
+      <MessageDialogView v-model:visible="visible"></MessageDialogView>
     </div>
   </div>
 </template>
@@ -97,6 +98,8 @@
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
 import springFirst from "@/assets/images/spring_first.jpg";
 import springSecond from "@/assets/images/spring_second.jpg";
+import MessageDialogView from "./MessageDialogView.vue";
+const visible = ref(false);
 onMounted(() => {
   products.value = [
     {
