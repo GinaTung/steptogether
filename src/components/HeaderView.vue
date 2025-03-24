@@ -72,12 +72,24 @@ const menuList = ref([
     label: "Shore Post",
     icon: "pi pi-plus-circle",
     command: () => {
-      router.push("/");
+      visible.value = true; // 讓對話框顯示
     },
   },
-  { label: 'Profile', icon: 'pi pi-users' },
-  { label: 'Settings', icon: 'pi pi-cog' },
-  { label: 'Logout', icon: 'pi pi-sign-out' },
+  { label: 'Profile', icon: 'pi pi-users',
+  command: () => {
+      router.push("/profile");
+    },
+   },
+  { label: 'Settings', icon: 'pi pi-cog',
+  command: () => {
+      router.push("/settings");
+    },
+   },
+  { label: 'Logout', icon: 'pi pi-sign-out',
+  command: () => {
+      router.push("/logout");
+    },
+   },
 ]);
 
 const visible = ref(false);

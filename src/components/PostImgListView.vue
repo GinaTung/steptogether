@@ -12,9 +12,18 @@
     <template #footer>
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-2">
-          <Button icon="pi pi-heart" rounded text></Button>
-          <Button icon="pi pi-comment" severity="secondary" rounded @click="toggleComment"></Button>
-          <Button icon="pi pi-send" severity="secondary" rounded text></Button>
+          <Button :icon="isHeartVisible ? 'pi pi-heart-fill':'pi pi-heart'" @click="toggleHeart"></Button>
+          <Button :icon="isCommentVisible ? 'pi pi-comments' : 'pi pi-comment'" 
+                severity="secondary" 
+                rounded 
+                @click="toggleComment">
+        </Button>
+
+        <Button icon="pi pi-send"
+        :class="{'filled-icon': isSendVisible}" 
+        severity="secondary"  
+        @click="toggleSend">
+        </Button>
         </div>
         <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
       </div>
@@ -175,11 +184,17 @@ const handleClickOutside = (event) => {
 };
 
 const isCommentVisible = ref(false);
-
+const isHeartVisible = ref(false);
+const isSendVisible = ref(false);
 const toggleComment = () => {
   isCommentVisible.value = !isCommentVisible.value;
 };
-
+const toggleHeart = () => {
+  isHeartVisible.value = !isHeartVisible.value;
+};
+const toggleSend = () => {
+  isSendVisible.value = !isSendVisible.value;
+};
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
@@ -189,3 +204,12 @@ onBeforeUnmount(() => {
 });
 
 </script>
+<style>
+.filled-icon .pi-send {
+  color: white !important; /* 改變圖示顏色 */
+  background-color: black; /* 背景填滿 */
+  padding: 8px; /* 調整填滿範圍 */
+  border-radius: 50%; /* 讓背景變圓 */
+}
+
+</style>
