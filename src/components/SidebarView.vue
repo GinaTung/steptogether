@@ -25,7 +25,7 @@ import { ref } from "vue";
 import springFirst from "@/assets/images/spring_first.jpg";
 const pageLikeList = ref([
   {
-    link: "/path1",
+    // link: "/path1",
     imgSrc: springFirst,
     imgAlt: "login-social-img",
     icon: "pi pi-user",
@@ -33,7 +33,7 @@ const pageLikeList = ref([
     userId: "@floydlett"
   },
   {
-    link: "/path2",
+    // link: "/path2",
     imgSrc: springFirst,
     imgAlt: "login-social-img",
     icon: "pi pi-user",
@@ -41,7 +41,7 @@ const pageLikeList = ref([
     userId: "@floydlett"
   },
   {
-    link: "/path3",
+    // link: "/path3",
     imgSrc: springFirst,
     imgAlt: "login-social-img",
     icon: "pi pi-user",

@@ -81,14 +81,14 @@ const menuList = ref([
     },
    },
   { label: 'Settings', icon: 'pi pi-cog',
-  command: () => {
-      router.push("/settings");
-    },
+  // command: () => {
+  //     router.push("/settings");
+  //   },
    },
   { label: 'Logout', icon: 'pi pi-sign-out',
-  command: () => {
-      router.push("/logout");
-    },
+  // command: () => {
+  //     router.push("/logout");
+  //   },
    },
 ]);
 

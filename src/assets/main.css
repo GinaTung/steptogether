@@ -1,2 +1,5 @@
 @import './base.css';
 @import "tailwindcss";
+:root {
+  --p-tabs-active-bar-background: #EF6C00 !important;
+}

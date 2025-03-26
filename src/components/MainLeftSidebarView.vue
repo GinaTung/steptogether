@@ -101,19 +101,19 @@ const menuList = ref([
 ]);
 const pageLikeList = ref([
   {
-    link: "/path1",
+    // link: "/path1",
     imgSrc: loginSocial,
     imgAlt: "login-social-img",
     text: "World of Mountains",
   },
   {
-    link: "/path2",
+    // link: "/path2",
     imgSrc: loginSocial,
     imgAlt: "login-social-img",
     text: "World of Mountains",
   },
   {
-    link: "/path3",
+    // link: "/path3",
     imgSrc: loginSocial,
     imgAlt: "login-social-img",
     text: "World of Mountains",
