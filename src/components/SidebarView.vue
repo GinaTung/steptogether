@@ -5,27 +5,27 @@
       <span class="px-2 font-black hidden md:block">PAGES YOU LIKE</span>
       <ul class="px-2 unstyled hidden md:block">
         <li v-for="(item, index) in pageLikeList" :key="index" class="my-3 flex items-center justify-between">
-          <router-link :to="item.link" class="flex items-center">
-            <i :class="item.icon" class="me-2"></i>
-            <div class="flex flex-col ">
+          <router-link :to="item.link || '/default-path'" class="flex items-center">
+            <i :class="['me-2', item.icon]"></i>
+            <div class="flex flex-col">
               <span class="text-sm">{{ item.userName }}</span>
               <span class="text-sm">{{ item.userId }}</span>
             </div>
-            <Button class="bg-[#d0d6dd26] rounded-lg p-2 ms-4" label="Follow me"></Button>
           </router-link>
+          <Button class="bg-[#d0d6dd26] rounded-lg p-2 ms-4" label="Follow me"></Button>
         </li>
       </ul>
     </div>
   </div>
 </template>
+
 <script setup>
-
 import { ref } from "vue";
-
 import springFirst from "@/assets/images/spring_first.jpg";
+
 const pageLikeList = ref([
   {
-    // link: "/path1",
+    link: "/", // 確保 link 有值
     imgSrc: springFirst,
     imgAlt: "login-social-img",
     icon: "pi pi-user",
@@ -33,7 +33,7 @@ const pageLikeList = ref([
     userId: "@floydlett"
   },
   {
-    // link: "/path2",
+    link: "/",
     imgSrc: springFirst,
     imgAlt: "login-social-img",
     icon: "pi pi-user",
@@ -41,7 +41,7 @@ const pageLikeList = ref([
     userId: "@floydlett"
   },
   {
-    // link: "/path3",
+    link: "/",
     imgSrc: springFirst,
     imgAlt: "login-social-img",
     icon: "pi pi-user",

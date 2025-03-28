@@ -10,7 +10,7 @@
             class="object-cover w-7/8 mx-auto"
             style="max-height: 850px"
             src="/src/assets/images/login-social-img.jpg"
-            alt="user header"
+            alt="login-social-img"
           />
         </template>
       </Card>
@@ -21,11 +21,11 @@
             class="object-cover w-1/2 mx-auto socialImg"
             style="max-height: 250px"
             src="/src/assets/images/login-social-img.jpg"
-            alt="user header"
+            alt="login-social-img"
           />
         </template>
         <template #title>
-          <h1 class="font-black text-center text-3xl mb-5">Create your free account</h1>
+          <h1 class="font-black text-center text-3xl mb-5">Admin Sign in</h1>
         </template>
         <template #content>
           <div class="card flex justify-center">
@@ -38,18 +38,6 @@
               @submit="onFormSubmit"
               class="flex flex-col gap-4 w-full sm:w-80"
             >
-            <Button
-              type="submit"
-              class="rounded-lg text-black py-2 text-xl bg-white border-2 border-black transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-700 hover:to-[#272F43] hover:text-white"
-              unstyled
-            >
-              <i class="pi pi-google me-2"></i>Google
-            </Button>
-            <div class="flex items-center gap-2">
-                <span class="flex-1 border-t border-gray-300"></span>
-                <span class="text-gray-500">Or login with</span>
-                <span class="flex-1 border-t border-gray-300"></span>
-              </div>
               <div class="flex flex-col gap-1">
                 <InputText name="email" type="text" placeholder="Email" fluid class="p-2"/>
                 <Message
@@ -87,49 +75,17 @@
                   >{{ $form.password.error?.message }}</Message
                 >
               </div>
-              <div class="flex flex-col gap-1">
-                <InputText name="fullname" type="text" placeholder="Fullname" fluid class="p-2"/>
-                <Message
-                  v-if="$form.fullname?.invalid"
-                  severity="error"
-                  size="small"
-                  variant="simple"
-                  style="height: 20px"
-                  >{{ $form.fullname.error?.message }}</Message
-                >
-              </div>
-              <div class="flex flex-col gap-1">
-                <InputText name="username" type="text" placeholder="Username" fluid class="p-2" />
-                <Message
-                  v-if="$form.username?.invalid"
-                  severity="error"
-                  size="small"
-                  variant="simple"
-                  style="height: 20px"
-                  >{{ $form.username.error?.message }}</Message
-                >
-              </div>
-              <div class="flex flex-col gap-1">
-                <InputText name="birthday" type="text" placeholder="西元年月日 Ex:20250311" fluid class="p-2" />
-                <Message
-                  v-if="$form.birthday?.invalid"
-                  severity="error"
-                  type="date"
-                  size="small"
-                  variant="simple"
-                  style="height: 20px"
-                  >{{ $form.birthday.error?.message }}</Message
-                >
-              </div>
               <div class="flex flex-col gap-2">
                 <div class="flex justify-between flex-wrap md:flex-nowrap">
-                  <RadioButtonGroup name="ingredient" class="flex flex-wrap gap-4 me-2">
+                  <RadioButtonGroup name="ingredient" v-model="ingredient" class="flex flex-wrap gap-4 me-2">
                     <div class="flex items-center gap-2">
                       <RadioButton inputId="remember" value="Remember me" />
-                      <label for="remember">I agree to Term amd Privacy Policy.</label>
+                      <label for="remember">Remember me</label>
                     </div>
                   </RadioButtonGroup>
-
+                  <a href="#" class="hover:underline hover:text-[#000]/50 ml-auto mt-2 sm:mt-auto">
+                    Forget Password?
+                  </a>
                 </div>
                 <Message
                   v-if="$form.ingredient?.invalid"
@@ -139,12 +95,33 @@
                   >{{ $form.ingredient.error?.message }}</Message
                 >
               </div>
+                <Button
+                  type="submit"
+                  class="rounded-lg text-white py-2 text-xl bg-[#DF4927] border-2 border-transparent hover:bg-gradient-to-r hover:from-[#272F43] hover:to-[#1B2230] transition-all duration-300 w-80"
+                  label="Sign in"
+                  unstyled
+                />
+              <div class="flex items-center gap-2">
+                <span class="flex-1 border-t border-gray-300"></span>
+                <span class="text-gray-500">Or login with</span>
+                <span class="flex-1 border-t border-gray-300"></span>
+              </div>
               <Button
                 type="submit"
-                class="rounded-lg text-white py-2 text-xl bg-[#DF4927] border-2 border-transparent hover:bg-gradient-to-r hover:from-[#272F43] hover:to-[#1B2230] transition-all duration-300"
-                label="Sign me up !"
+                class="rounded-lg text-black py-2 text-xl bg-white border-2 border-black transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-700 hover:to-[#272F43] hover:text-white"
                 unstyled
-              />
+              >
+                <i class="pi pi-google me-2"></i>Google
+              </Button>
+              <div class="flex flex-wrap md:flex-nowrap">
+                <span class="me-2">Don’t have an account?</span>
+                <router-link
+                  to="/signUp"
+                  class="font-black text-[#DF4927] hover:underline hover:text-[#272F43] ml-auto mt-2 sm:mt-auto"
+                >
+                  Sign Up now
+                </router-link>
+              </div>
             </Form>
           </div>
         </template>
@@ -166,31 +143,27 @@ const passwordVisible = ref(false);
 const togglePasswordVisibility = () => {
   passwordVisible.value = !passwordVisible.value;
 };
+// const adminLogin = () => {
+//   localStorage.setItem('isLoggedIn', 'true'); // 設定登入狀態
+//   router.push('/admin/home'); // 跳轉至首頁
+// };
+// 這裡設置 ingredient 的預設值為 "Remember me"
+const ingredient = ref('Remember me');
+
 const initialValues = reactive({
   email: "",
   password: "",
-  username:"",
-  fullname:"",
-  birthday:"",
-  ingredient: "",
+  ingredient: ingredient.value, // 更新初始值
 });
 
 const resolver = ({ values }) => {
   const errors = {};
 
   // Username validation
-  if (!values.username) {
-    errors.username = [{ message: "Username is required." }];
-  }
-  if (!values.fullname) {
-    errors.fullname = [{ message: "Fullname is required." }];
-  }
-  if (!values.birthday) {
-    errors.birthday = [{ message: "Birthday is required." }];
-  }
   if (!values.email) {
     errors.email = [{ message: "Email is required." }];
   }
+
   // Password validation
   if (!values.password) {
     errors.password = [{ message: "Password is required." }];
@@ -216,11 +189,6 @@ const resolver = ({ values }) => {
     else if (!/[0-9]/.test(password)) {
       errors.password = [{ message: "Password must contain at least one number." }];
     }
-
-    // Check for at least one special character
-    else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      errors.password = [{ message: "Password must contain at least one special character." }];
-    }
   }
   if (!values.ingredient) {
     errors.ingredient = [{ message: "Ingredient is required." }];
@@ -236,14 +204,15 @@ const onFormSubmit = ({ valid }) => {
   if (valid) {
     toast.add({
       severity: "success",
-      summary: "註冊成功，將跳轉至登入頁面",
+      summary: "註冊成功，將跳轉至管理者頁面",
       life: 3000,
     });
 
     // 延遲導航，讓 Toast 有時間顯示
     setTimeout(() => {
-      router.push("/login"); // 跳轉到登入頁面
-    }, 1500);
+      localStorage.setItem('isLoggedIn', 'true'); // 設定登入狀態
+      router.push('/admin/home'); // 跳轉至首頁
+    }, 100);
   }
 };
 </script>

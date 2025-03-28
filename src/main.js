@@ -9,6 +9,8 @@ import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";
 
 import 'primeicons/primeicons.css'; // 圖標
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import ToastService from 'primevue/toastservice';
 const app = createApp(App);
 
@@ -28,4 +30,6 @@ app.use(PrimeVue, {
   },
 });
 app.use(ToastService);
+app.component('IconField', IconField);
+app.component('InputIcon', InputIcon);
 app.mount("#app");

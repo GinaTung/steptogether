@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between items-center p-3">
     <div class="flex item-center">
-      <Button @click="toggleMenu"
+      <Button @click="toggleMenu" v-if="!route.path.startsWith('/admin')"
         class="text-white bg-[#EF6C00] rounded-lg hover:bg-gradient-to-r hover:from-[#272F43] hover:to-[#1B2230] transition-all duration-300 p-2 cursor-pointer hidden md:block"
         unstyled>
         <i class="pi pi-bars"></i>
@@ -14,14 +14,15 @@
       </router-link>
     </div>
 
-    <div class="flex justify-between w-100">
+    <div class="flex justify-between w-100" v-if="!route.path.startsWith('/admin')">
       <InputText placeholder="Search" type="text" class="w-[250px] border border-black rounded-md px-2 hidden md:block"
         unstyled />
 
-        <Button label="SHORE POST"
+      <Button label="SHORE POST"
         class="p-2 text-white bg-[#EF6C00] rounded-lg hover:bg-gradient-to-r hover:from-[#272F43] hover:to-[#1B2230] transition-all duration-300 cursor-pointer hidden md:block"
         unstyled @click="visible = true" />
     </div>
+
 
 
     <div class="card flex justify-center">
@@ -51,11 +52,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useHomeStore } from "@/stores/useHomeStore";
-import { useRouter } from "vue-router";
+import { useRouter,useRoute } from "vue-router";
 import footstepIcon from "@/assets/images/footstep.svg";
 import AddSharePostView from './AddSharePostView.vue';
 
 const router = useRouter();
+const route = useRoute();
 const homeStore = useHomeStore();
 const toggleMenu = homeStore.toggleMenu;
 // 假設使用者名稱是 "奘太"
@@ -86,9 +88,10 @@ const menuList = ref([
   //   },
    },
   { label: 'Logout', icon: 'pi pi-sign-out',
-  // command: () => {
-  //     router.push("/logout");
-  //   },
+  command: () => {
+    localStorage.removeItem('isLoggedIn'); // 移除登入狀態
+      router.push("/login");
+    },
    },
 ]);
 
