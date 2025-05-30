@@ -90,7 +90,9 @@
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
 import springFirst from "@/assets/images/spring_first.jpg";
 import springSecond from "@/assets/images/spring_second.jpg";
-
+const { pageTitle } = defineProps({
+  pageTitle: String
+})
 onMounted(() => {
   products.value = [
     {

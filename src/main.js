@@ -7,13 +7,14 @@ import App from "./App.vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";
+import axios from 'axios';
 
 import 'primeicons/primeicons.css'; // 圖標
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import ToastService from 'primevue/toastservice';
 const app = createApp(App);
-
+app.config.globalProperties.axios = axios;
 app.use(createPinia());
 app.use(router);
 app.use(PrimeVue, {

@@ -86,6 +86,7 @@
               </p>
               <Button severity="secondary" label="更多" @click="toggle" class="more-btn" />
             </div>
+            <p>目前頁面是：{{ pageTitle }}</p>
           </div>
         </div>
       </Panel>
@@ -100,6 +101,11 @@ import springFirst from "@/assets/images/spring_first.jpg";
 import springSecond from "@/assets/images/spring_second.jpg";
 import MessageDialogView from "./MessageDialogView.vue";
 const visible = ref(false);
+const { pageTitle } = defineProps({
+  pageTitle: String
+})
+
+
 onMounted(() => {
   products.value = [
     {

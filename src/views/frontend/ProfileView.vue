@@ -1,9 +1,5 @@
 <template>
   <!-- 中側區塊 (可滾動) -->
-  <div class="flex-1 pt-1" :class="{
-    'sm:ml-26 md:ml-75 xl:mr-75': menuVisible, // 左右兩側留白
-    'ml-0 mr-0': !menuVisible,
-  }">
     <div class="bg-[#d0d6dd26] p-3 inset-y-3">
       <div class="relative">
         <!-- 限制圖片高度並隱藏溢出部分 -->
@@ -100,16 +96,15 @@
       </div>
     </div>
 
-  </div>
 </template>
 
 <script setup>
 import forest from "@/assets/images/forest.jpg";
 import memberImg from "@/assets/images/memberImg.svg";
-import { storeToRefs } from "pinia";
-import { useHomeStore } from "@/stores/useHomeStore";
-const homeStore = useHomeStore();
-const { menuVisible } = storeToRefs(homeStore); // 這樣 `menuVisible` 會保持響應式
+// import { storeToRefs } from "pinia";
+// import { useHomeStore } from "@/stores/useHomeStore";
+// const homeStore = useHomeStore();
+// const { menuVisible } = storeToRefs(homeStore); // 這樣 `menuVisible` 會保持響應式
 import { ref } from "vue";
 
 const items = ref([
