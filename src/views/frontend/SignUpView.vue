@@ -200,7 +200,6 @@ const onFormSubmit = async ({ valid, values }) => {
       fullName: values.fullname,
       birthday: values.birthday // 如果需要，可以用 new Date(values.birthday).toISOString()
     };
-    console.log(payload);
 
     const { error, message } = await getSigninData(payload); // ✅ 呼叫 API 傳值
     isLoading.value = false; // 隱藏 loading

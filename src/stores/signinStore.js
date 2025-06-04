@@ -9,7 +9,6 @@ export const useSigninStore = defineStore("signin", () => {
 
   const getSigninData = async (payload) => {
     const response = await $post(`signin`, payload);
-    console.log(`response`,response);
     
     if (!response.error) {
       signinList.value = response.data;
