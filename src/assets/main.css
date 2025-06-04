@@ -3,3 +3,7 @@
 :root {
   --p-tabs-active-bar-background: #EF6C00 !important;
 }
+/* primevue 全域 */
+.p-toast-message-content {
+  padding: 10px !important;
+}
