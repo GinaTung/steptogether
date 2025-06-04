@@ -124,12 +124,12 @@ import { ref, reactive } from "vue";
 import { Form } from "@primevue/forms";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
-import { useSigninStore } from "@/stores/signinStore"; // <-- 應該是 signinStore，不是 useHomeStore
+import { useSignupStore } from "@/stores/signupStore"; // <-- 應該是 signinStore，不是 useHomeStore
 import ProgressSpinner from 'primevue/progressspinner';
 const isLoading = ref(false);
-const signinStore = useSigninStore();
+const signupStore = useSignupStore();
 // const { signinList } = storeToRefs(signinStore); // ✅ 這是 ref，要用 storeToRefs
-const { getSigninData } = signinStore; // ✅ 這是方法，直接取即可
+const { getSignupData } = signupStore; // ✅ 這是方法，直接取即可
 
 const router = useRouter();
 const toast = useToast();
@@ -223,7 +223,7 @@ const onFormSubmit = async ({ valid, values }) => {
       birthday: values.birthday // 如果需要，可以用 new Date(values.birthday).toISOString()
     };
 
-    const { error, message } = await getSigninData(payload); // ✅ 呼叫 API 傳值
+    const { error, message } = await getSignupData(payload); // ✅ 呼叫 API 傳值
     isLoading.value = false; // 隱藏 loading
     if (error) {
       toast.add({
