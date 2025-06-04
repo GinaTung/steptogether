@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex justify-center items-center relative">
+  <div class="container mx-auto md:h-screen flex justify-center items-center">
     <div class="flex flex-col md:flex-row gap-4 bg-[rgba(208,214,221,0.15)] p-2 rounded-xl">
       <Card class="md:basis-1/2 flex-sm-hide">
         <template #header>
@@ -10,14 +10,14 @@
             src="/src/assets/images/login-social-img.jpg" alt="login-social-img" />
         </template>
       </Card>
-      <Card class="md:basis-1/2 flex justify-center">
+      <Card class="md:basis-1/2 flex justify-center p-2">
         <template #header>
           <h2 class="font-black p-4 text-2xl text-center md:hidden">StepTogether</h2>
           <img class="object-cover w-1/2 mx-auto socialImg" style="max-height: 250px"
             src="/src/assets/images/login-social-img.jpg" alt="login-social-img" />
         </template>
         <template #title>
-          <h1 class="font-black text-center text-3xl mb-5">Sign in</h1>
+          <h1 class="font-black text-center text-3xl p-4 mb-0 mb-md-5">Sign in</h1>
         </template>
         <template #content>
           <div class="card flex justify-center">
@@ -26,19 +26,39 @@
             <Form v-slot="$form" :initialValues="initialValues" :resolver="resolver" @submit="onFormSubmit"
               class="flex flex-col gap-4 w-full sm:w-80">
               <div class="flex flex-col gap-1">
-                <InputText name="email" type="text" placeholder="Email" fluid class="p-2" />
+                <InputText name="email" type="text" placeholder="Email" fluid class="p-2 border border-black rounded" />
                 <Message v-if="$form.email?.invalid" severity="error" type="email" size="small" variant="simple"
                   style="height: 20px">{{ $form.email.error?.message }}</Message>
               </div>
-              <div class="flex flex-col gap-1 relative">
-                <InputText name="password" :type="passwordVisible ? 'text' : 'password'" placeholder="Password"
-                  class="p-2" fluid />
-                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2"
-                  @click="togglePasswordVisibility" :class="{ 'pb-2': $form.password?.invalid }">
-                  <i :class="passwordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-                </button>
-                <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple"
-                  style="height: 20px">{{ $form.password.error?.message }}</Message>
+              <div class="flex flex-col gap-1">
+                <!-- 將 InputText + 按鈕 放進 relative 容器中 -->
+                <div class="relative pb-1">
+                  <InputText
+                    name="password"
+                    :type="passwordVisible ? 'text' : 'password'"
+                    placeholder="Password"
+                    class="p-2 border border-black rounded w-full"
+                  />
+                  <!-- 按鈕固定在最左側中間 -->
+                  <button
+                    type="button"
+                    class="absolute right-2 top-1/2 -translate-y-1/2"
+                    @click="togglePasswordVisibility"
+                  >
+                    <i :class="passwordVisible ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+                  </button>
+                </div>
+
+                <!-- 錯誤訊息放在下面 -->
+                <Message
+                  v-if="$form.password?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  style="height: 20px"
+                >
+                  {{ $form.password.error?.message }}
+                </Message>
               </div>
               <div class="flex flex-col gap-2">
                 <div class="flex justify-between flex-wrap md:flex-nowrap">
@@ -76,17 +96,16 @@
                 </router-link>
               </div>
             </Form>
+            <div class="hidden lg:flex justify-center absolute right-20 bottom-8">
+              <router-link to="/adminLogin" class="font-black text-[#DF4927] hover:underline hover:text-[#272F43]">
+                管理者登入
+              </router-link>
+            </div>
           </div>
         </template>
       </Card>
     </div>
   </div>
-  <div class="flex justify-center absolute right-60 bottom-15">
-    <router-link to="/adminLogin" class="font-black text-[#DF4927] hover:underline hover:text-[#272F43]">
-      管理者登入
-    </router-link>
-  </div>
-
 </template>
 
 <script setup>
@@ -197,5 +216,12 @@ const onFormSubmit = ({ valid }) => {
   .socialImg {
     display: none !important;
   }
+}
+::v-deep(.p-radiobutton-box) {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+::v-deep(.p-radiobutton-box.p-highlight) {
+  border-color: rgba(0, 0, 0, 0.5) !important;
 }
 </style>

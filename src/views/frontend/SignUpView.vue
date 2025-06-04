@@ -14,14 +14,14 @@
         <template #header>
           <h2 class="font-black p-4 text-2xl text-center md:hidden">StepTogether</h2>
           <img class="object-cover w-1/2 mx-auto socialImg" style="max-height: 250px"
-            src="/src/assets/images/login-social-img.jpg" alt="user header" />
+            src="/src/assets/images/login-social-img.jpg" alt="login-social-img" />
         </template>
         <template #title>
           <h1 class="font-black text-center text-3xl p-4 mb-0 mb-md-5">Create your free account</h1>
         </template>
         <template #content>
           <div class="card flex justify-center">
-            <Toast class="custom-toast5" />
+            <Toast />
             <div v-if="isLoading" class="fixed inset-0 z-50 flex justify-center items-center"
               style="background: hsl(0deg 0% 100% / 50%)">
               <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="4" />
@@ -45,16 +45,38 @@
                 <Message v-if="$form.email?.invalid" severity="error" type="email" size="small" variant="simple"
                   style="height: 14px">{{ $form.email.error?.message }}</Message>
               </div>
-              <div class="flex flex-col gap-1 relative">
-                <InputText name="password" :type="passwordVisible ? 'text' : 'password'" placeholder="Password" fluid
-                  class="p-2 border border-black rounded" />
-                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2"
-                  @click="togglePasswordVisibility" :class="{ 'pb-2': $form.password?.invalid }">
-                  <i :class="passwordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-                </button>
-                <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple"
-                  style="height: 14px">{{ $form.password.error?.message }}</Message>
+              <div class="flex flex-col gap-1">
+                <!-- InputText + 按鈕放在 relative 容器中 -->
+                <div class="relative pb-1">
+                  <InputText
+                    name="password"
+                    :type="passwordVisible ? 'text' : 'password'"
+                    placeholder="Password"
+                    class="p-2 border border-black rounded w-full"
+                    fluid
+                  />
+                  <!-- 按鈕固定在右側中間 -->
+                  <button
+                    type="button"
+                    class="absolute right-2 top-1/2 -translate-y-1/2"
+                    @click="togglePasswordVisibility"
+                  >
+                    <i :class="passwordVisible ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+                  </button>
+                </div>
+
+                <!-- 錯誤訊息 -->
+                <Message
+                  v-if="$form.password?.invalid"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                  style="height: 14px"
+                >
+                  {{ $form.password.error?.message }}
+                </Message>
               </div>
+
               <div class="flex flex-col gap-1">
                 <InputText name="fullname" type="text" placeholder="Fullname" fluid
                   class="p-2 border border-black rounded" />

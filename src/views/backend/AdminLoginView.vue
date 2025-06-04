@@ -39,7 +39,7 @@
               class="flex flex-col gap-4 w-full sm:w-80"
             >
               <div class="flex flex-col gap-1">
-                <InputText name="email" type="text" placeholder="Email" fluid class="p-2"/>
+                <InputText name="email" type="text" placeholder="Email" fluid class="p-2 border border-black rounded w-ful"/>
                 <Message
                   v-if="$form.email?.invalid"
                   severity="error"
@@ -50,30 +50,35 @@
                   >{{ $form.email.error?.message }}</Message
                 >
               </div>
-              <div class="flex flex-col gap-1 relative">
-                <InputText
-                  name="password"
-                  :type="passwordVisible ? 'text' : 'password'"
-                  placeholder="Password"
-                  fluid
-                  class="p-2"
-                />
-                <button
-                  type="button"
-                  class="absolute right-3 top-1/2 transform -translate-y-1/2"
-                  @click="togglePasswordVisibility"
-                  :class="{ 'pb-2': $form.password?.invalid }"
-                >
-                  <i :class="passwordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-                </button>
+              <div class="flex flex-col gap-1">
+                <!-- 將 InputText + 按鈕 放進 relative 容器中 -->
+                <div class="relative pb-1">
+                  <InputText
+                    name="password"
+                    :type="passwordVisible ? 'text' : 'password'"
+                    placeholder="Password"
+                    class="p-2 border border-black rounded w-full"
+                  />
+                  <!-- 按鈕固定在最左側中間 -->
+                  <button
+                    type="button"
+                    class="absolute right-2 top-1/2 -translate-y-1/2"
+                    @click="togglePasswordVisibility"
+                  >
+                    <i :class="passwordVisible ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+                  </button>
+                </div>
+
+                <!-- 錯誤訊息放在下面 -->
                 <Message
                   v-if="$form.password?.invalid"
                   severity="error"
                   size="small"
                   variant="simple"
                   style="height: 20px"
-                  >{{ $form.password.error?.message }}</Message
                 >
+                  {{ $form.password.error?.message }}
+                </Message>
               </div>
               <div class="flex flex-col gap-2">
                 <div class="flex justify-between flex-wrap md:flex-nowrap">
