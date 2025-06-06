@@ -21,10 +21,10 @@ const API_TYPE = {
 const handleError = (error) => {
   if (error.response) {
     const message = error.response.data?.message || '伺服器錯誤';
-    console.error('❌ Server Error:', message);
+    console.error('Server Error:', message);
     return { error: true, message };
   } else {
-    console.error('❌ Network Error:', error.message);
+    console.error('Network Error:', error.message);
     return { error: true, message: error.message || '發生未知錯誤' };
   }
 };

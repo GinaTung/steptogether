@@ -13,8 +13,8 @@ export const useSigninStore = defineStore("signin", () => {
     if (!response.error) {
       signinList.value = response.data;
     }
-
-    return response; // ⚠️ 組件可以透過這個拿 error 或成功資料
+    
+    return response; // 組件可以透過這個拿 error 或成功資料
   };
 
   return {

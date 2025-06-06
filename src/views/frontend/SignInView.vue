@@ -174,50 +174,60 @@ const resolver = ({ values }) => {
 };
 
 const onFormSubmit = async ({ valid, values }) => {
-  isLoading.value = true; // 顯示 loading
+  isLoading.value = true;
+
   if (valid) {
     const payload = {
       email: values.email,
       password: values.password
     };
 
-    const { error, data } = await getSigninData(payload)
-    const token = data.data.token;
-    localStorage.setItem('token', token);          // 儲存 token
-    localStorage.setItem('isLoggedIn', 'true');
+    try {
+      const { error, message,data } = await getSigninData(payload);
 
-    isLoading.value = false; // 隱藏 loading
-    if (error) {
+      if (error) {
+        toast.add({
+          severity: "error",
+          summary: "登入失敗",
+          detail: message,
+          life: 3000,
+        });
+      } else {
+        const token = data.data.token;
+        localStorage.setItem('token', token);
+        localStorage.setItem('isLoggedIn', 'true');
+
+        toast.add({
+          severity: "success",
+          summary: "登入成功",
+          life: 3000,
+        });
+
+        Object.assign(initialValues, {
+          email: "",
+          password: "",
+          ingredient: "",
+        });
+
+        setTimeout(() => {
+          router.push("/");
+        }, 1500);
+      }
+    } catch (e) {
       toast.add({
         severity: "error",
         summary: "登入失敗",
-        detail: data.data.message,
+        detail: e.message || "伺服器錯誤",
         life: 3000,
       });
-    } else {
-      toast.add({
-        severity: "success",
-        summary: "登入成功",
-        life: 3000,
-      });
-      // ✅ 清空表單資料
-      Object.assign(initialValues, {
-        email: "",
-        password: "",
-        ingredient: "",
-      });
-
-
-      // 延遲導航，讓 Toast 有時間顯示
-      setTimeout(() => {
-        router.push("/"); // 跳轉到頁面
-        console.log("目前路徑:", router.currentRoute.value.fullPath);
-      }, 1500);
+    } finally {
+      isLoading.value = false;
     }
   } else {
-    isLoading.value = false; // 隱藏 loading
+    isLoading.value = false;
   }
 };
+
 </script>
 <style scoped>
 .flex-sm-hide {
