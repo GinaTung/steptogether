@@ -21,7 +21,7 @@ import Header from './components/HeaderView.vue';
 const route = useRoute();
 
 // 判斷當前路由是否需要 Header 和 Footer
-const showHeaderFooter = computed(() => !['/login','/signUp','/adminLogin'].includes(route.path));
+const showHeaderFooter = computed(() => !['/signIn','/signUp','/adminLogin'].includes(route.path));
 
 // onMounted(() => {
 //   setTimeout(() => {

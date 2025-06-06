@@ -42,7 +42,7 @@ import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 const route = useRoute();
 const router = useRouter();
-import loginSocial from "@/assets/images/login-social-img.jpg";
+import signinSocial from "@/assets/images/login-social-img.jpg";
 const menuList = ref([
   {
     label: "home",
@@ -88,20 +88,20 @@ const menuList = ref([
 const pageLikeList = ref([
   {
     link: "/",
-    imgSrc: loginSocial,
-    imgAlt: "login-social-img",
+    imgSrc: signinSocial,
+    imgAlt: "signin-social-img",
     text: "World of Mountains",
   },
   {
     link: "/",
-    imgSrc: loginSocial,
-    imgAlt: "login-social-img",
+    imgSrc: signinSocial,
+    imgAlt: "signin-social-img",
     text: "World of Mountains",
   },
   {
     link: "/",
-    imgSrc: loginSocial,
-    imgAlt: "login-social-img",
+    imgSrc: signinSocial,
+    imgAlt: "signin-social-img",
     text: "World of Mountains",
   },
 ]);

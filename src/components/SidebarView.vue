@@ -27,7 +27,7 @@ const pageLikeList = ref([
   {
     link: "/", // 確保 link 有值
     imgSrc: springFirst,
-    imgAlt: "login-social-img",
+    imgAlt: "signin-social-img",
     icon: "pi pi-user",
     userName: "Scarlett Floyd",
     userId: "@floydlett"
@@ -35,7 +35,7 @@ const pageLikeList = ref([
   {
     link: "/",
     imgSrc: springFirst,
-    imgAlt: "login-social-img",
+    imgAlt: "signin-social-img",
     icon: "pi pi-user",
     userName: "Scarlett Floyd",
     userId: "@floydlett"
@@ -43,7 +43,7 @@ const pageLikeList = ref([
   {
     link: "/",
     imgSrc: springFirst,
-    imgAlt: "login-social-img",
+    imgAlt: "signin-social-img",
     icon: "pi pi-user",
     userName: "Scarlett Floyd",
     userId: "@floydlett"

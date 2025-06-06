@@ -14,7 +14,7 @@
         <template #header>
           <h2 class="font-black p-4 text-2xl text-center md:hidden">StepTogether</h2>
           <img class="object-cover w-1/2 mx-auto socialImg" style="max-height: 250px"
-            src="/src/assets/images/login-social-img.jpg" alt="login-social-img" />
+            src="/src/assets/images/login-social-img.jpg" alt="signin-social-img" />
         </template>
         <template #title>
           <h1 class="font-black text-center text-3xl p-4 mb-0 mb-md-5">Create your free account</h1>
@@ -37,7 +37,7 @@
             </Button>
             <div class="flex items-center gap-2">
                 <span class="flex-1 border-t border-gray-300"></span>
-                <span class="text-gray-500">Or login with</span>
+                <span class="text-gray-500">Or signin with</span>
                 <span class="flex-1 border-t border-gray-300"></span>
               </div> -->
               <div class="flex flex-col gap-1">
@@ -124,7 +124,7 @@ import { ref, reactive } from "vue";
 import { Form } from "@primevue/forms";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
-import { useSignupStore } from "@/stores/signupStore"; // <-- 應該是 signinStore，不是 useHomeStore
+import { useSignupStore } from "@/stores/signupStore"; 
 import ProgressSpinner from 'primevue/progressspinner';
 const isLoading = ref(false);
 const signupStore = useSignupStore();

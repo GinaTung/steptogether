@@ -90,7 +90,9 @@ const menuList = ref([
   { label: 'Logout', icon: 'pi pi-sign-out',
   command: () => {
     localStorage.removeItem('isLoggedIn'); // 移除登入狀態
-      router.push("/login");
+    // token
+    localStorage.removeItem('token');
+      router.push("/signIn");
     },
    },
 ]);

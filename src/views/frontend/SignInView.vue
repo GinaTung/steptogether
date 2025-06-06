@@ -7,14 +7,14 @@
         </template>
         <template #content>
           <img class="object-cover w-7/8 mx-auto" style="max-height: 850px"
-            src="/src/assets/images/login-social-img.jpg" alt="login-social-img" />
+            src="/src/assets/images/login-social-img.jpg" alt="signin-social-img" />
         </template>
       </Card>
       <Card class="md:basis-1/2 flex justify-center p-2">
         <template #header>
           <h2 class="font-black p-4 text-2xl text-center md:hidden">StepTogether</h2>
           <img class="object-cover w-1/2 mx-auto socialImg" style="max-height: 250px"
-            src="/src/assets/images/login-social-img.jpg" alt="login-social-img" />
+            src="/src/assets/images/login-social-img.jpg" alt="signin-social-img" />
         </template>
         <template #title>
           <h1 class="font-black text-center text-3xl p-4 mb-0 mb-md-5">Sign in</h1>
@@ -22,7 +22,10 @@
         <template #content>
           <div class="card flex justify-center">
             <Toast />
-
+            <div v-if="isLoading" class="fixed inset-0 z-50 flex justify-center items-center"
+              style="background: hsl(0deg 0% 100% / 50%)">
+              <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="4" />
+            </div>
             <Form v-slot="$form" :initialValues="initialValues" :resolver="resolver" @submit="onFormSubmit"
               class="flex flex-col gap-4 w-full sm:w-80">
               <div class="flex flex-col gap-1">
@@ -33,30 +36,18 @@
               <div class="flex flex-col gap-1">
                 <!-- 將 InputText + 按鈕 放進 relative 容器中 -->
                 <div class="relative pb-1">
-                  <InputText
-                    name="password"
-                    :type="passwordVisible ? 'text' : 'password'"
-                    placeholder="Password"
-                    class="p-2 border border-black rounded w-full"
-                  />
+                  <InputText name="password" :type="passwordVisible ? 'text' : 'password'" placeholder="Password"
+                    class="p-2 border border-black rounded w-full" />
                   <!-- 按鈕固定在最左側中間 -->
-                  <button
-                    type="button"
-                    class="absolute right-2 top-1/2 -translate-y-1/2"
-                    @click="togglePasswordVisibility"
-                  >
+                  <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2"
+                    @click="togglePasswordVisibility">
                     <i :class="passwordVisible ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
                   </button>
                 </div>
 
                 <!-- 錯誤訊息放在下面 -->
-                <Message
-                  v-if="$form.password?.invalid"
-                  severity="error"
-                  size="small"
-                  variant="simple"
-                  style="height: 20px"
-                >
+                <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple"
+                  style="height: 20px">
                   {{ $form.password.error?.message }}
                 </Message>
               </div>
@@ -77,10 +68,10 @@
               </div>
               <Button type="submit"
                 class="rounded-lg text-white py-2 text-xl bg-[#DF4927] border-2 border-transparent hover:bg-gradient-to-r hover:from-[#272F43] hover:to-[#1B2230] transition-all duration-300 w-80"
-                label="Sign in" unstyled @click="login" />
+                label="Sign in" unstyled />
               <div class="flex items-center gap-2">
                 <span class="flex-1 border-t border-gray-300"></span>
-                <span class="text-gray-500">Or login with</span>
+                <span class="text-gray-500">Or signin with</span>
                 <span class="flex-1 border-t border-gray-300"></span>
               </div>
               <Button type="submit"
@@ -113,14 +104,14 @@ import { ref, reactive } from "vue";
 import { Form } from "@primevue/forms";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
-
+import { useSigninStore } from "@/stores/signinStore";
 const router = useRouter();
+const signinStore = useSigninStore();
+const { getSigninData } = signinStore;
 const toast = useToast();
+const isLoading = ref(false);
 const passwordVisible = ref(false);
-const login = () => {
-  localStorage.setItem('isLoggedIn', 'true'); // 設定登入狀態
-  router.push('/'); // 跳轉至首頁
-};
+
 const togglePasswordVisibility = () => {
   passwordVisible.value = !passwordVisible.value;
 };
@@ -182,18 +173,49 @@ const resolver = ({ values }) => {
   };
 };
 
-const onFormSubmit = ({ valid }) => {
+const onFormSubmit = async ({ valid, values }) => {
+  isLoading.value = true; // 顯示 loading
   if (valid) {
-    toast.add({
-      severity: "success",
-      summary: "註冊成功，將跳轉至動態消息",
-      life: 3000,
-    });
+    const payload = {
+      email: values.email,
+      password: values.password
+    };
 
-    // 延遲導航，讓 Toast 有時間顯示
-    setTimeout(() => {
-      router.push("/"); // 跳轉到頁面
-    }, 1500);
+    const { error, data } = await getSigninData(payload)
+    const token = data.data.token;
+    localStorage.setItem('token', token);          // 儲存 token
+    localStorage.setItem('isLoggedIn', 'true');
+
+    isLoading.value = false; // 隱藏 loading
+    if (error) {
+      toast.add({
+        severity: "error",
+        summary: "登入失敗",
+        detail: data.data.message,
+        life: 3000,
+      });
+    } else {
+      toast.add({
+        severity: "success",
+        summary: "登入成功",
+        life: 3000,
+      });
+      // ✅ 清空表單資料
+      Object.assign(initialValues, {
+        email: "",
+        password: "",
+        ingredient: "",
+      });
+
+
+      // 延遲導航，讓 Toast 有時間顯示
+      setTimeout(() => {
+        router.push("/"); // 跳轉到頁面
+        console.log("目前路徑:", router.currentRoute.value.fullPath);
+      }, 1500);
+    }
+  } else {
+    isLoading.value = false; // 隱藏 loading
   }
 };
 </script>
@@ -217,6 +239,7 @@ const onFormSubmit = ({ valid }) => {
     display: none !important;
   }
 }
+
 ::v-deep(.p-radiobutton-box) {
   border: 1px solid rgba(0, 0, 0, 0.5);
 }

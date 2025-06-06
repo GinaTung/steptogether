@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '@/views/frontend/HomeView.vue';
-import LoginView from '@/views/frontend/LoginView.vue'
+import SignInView from '@/views/frontend/SignInView.vue'
 import SignUpView from '@/views/frontend/SignUpView.vue'
 import MainLayoutViewVue from '@/views/frontend/MainLayoutView.vue';
 import FriendsView from '@/views/frontend/FriendsView.vue'
@@ -17,7 +17,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login',
+      redirect: '/signIn',
       component: MainLayoutViewVue,
       meta: { requiresAuth: true }, 
       children: [
@@ -54,9 +54,9 @@ const router = createRouter({
       ],
     },
     {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
+      path: '/signIn',
+      name: 'signIn',
+      component: SignInView,
     },
     {
       path: '/signUp',
@@ -117,7 +117,7 @@ router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // 假設用 localStorage 儲存登入狀態
 
   if (to.meta.requiresAuth && !isLoggedIn) {
-    next('/login'); // 若未登入則導向 login 頁面
+    next('/signIn'); // 若未登入則導向 signin 頁面
   } else {
     next(); // 允許進入
   }

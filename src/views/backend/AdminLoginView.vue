@@ -10,7 +10,7 @@
             class="object-cover w-7/8 mx-auto"
             style="max-height: 850px"
             src="/src/assets/images/login-social-img.jpg"
-            alt="login-social-img"
+            alt="signin-social-img"
           />
         </template>
       </Card>
@@ -21,7 +21,7 @@
             class="object-cover w-1/2 mx-auto socialImg"
             style="max-height: 250px"
             src="/src/assets/images/login-social-img.jpg"
-            alt="login-social-img"
+            alt="signin-social-img"
           />
         </template>
         <template #title>
@@ -108,7 +108,7 @@
                 />
               <div class="flex items-center gap-2">
                 <span class="flex-1 border-t border-gray-300"></span>
-                <span class="text-gray-500">Or login with</span>
+                <span class="text-gray-500">Or signIn with</span>
                 <span class="flex-1 border-t border-gray-300"></span>
               </div>
               <Button
