@@ -11,21 +11,18 @@
       </div>
     </div>
 
-    <PostImgListView v-show="changeBlock === 'List'" :page-title="pageTitle"/>
-    <PostImgBlockView v-show="changeBlock === 'Block'" />
+    <PostImgListView v-if="changeBlock === 'List'" />
+    <PostImgBlockView v-else />
   </div>
+
 </template>
 
 <script setup>
 import { useRoute } from "vue-router";
-import { ref, onMounted, computed } from "vue";
-import { usePostsStore } from '@/stores/postsStore'; // 引入 Pinia store
+import { ref, computed } from "vue";
 import PostImgListView from "@/components/PostImgListView.vue";
 import PostImgBlockView from "@/components/PostImgBlockView.vue";
-
 const route = useRoute();
-const postsStore = usePostsStore(); // 使用 Pinia store
-
 const changeBlock = ref("List"); // 預設顯示 A 區塊
 const pageTitle = computed(() => {
   const name = route.name ?? ''
@@ -38,11 +35,6 @@ const toggleBlock = () => {
 const toggleList = () => {
   changeBlock.value = "List";
 };
-
-// 當頁面掛載時，調用 getPostsData
-onMounted(() => {
-  postsStore.getPostsData();
-});
 </script>
 
 <style scoped>

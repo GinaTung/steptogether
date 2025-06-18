@@ -11,8 +11,8 @@ export const usePostsStore = defineStore("posts", () => {
   const getPostsData = async () => {
     try {
       const response = await $get(`Posts`);
-      postsList.value = response;
-      console.log(response);
+      postsList.value = response.data.posts;
+      
     } catch (error) {
       console.error("Error fetching articles:", error);
     }

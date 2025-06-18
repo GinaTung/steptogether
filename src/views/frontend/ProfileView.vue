@@ -102,9 +102,9 @@
 import forest from "@/assets/images/forest.jpg";
 import memberImg from "@/assets/images/memberImg.svg";
 // import { storeToRefs } from "pinia";
-// import { useHomeStore } from "@/stores/useHomeStore";
-// const homeStore = useHomeStore();
-// const { menuVisible } = storeToRefs(homeStore); // 這樣 `menuVisible` 會保持響應式
+// import { usePostsStore } from "@/stores/postsStore";
+// const postsStore = usePostsStore();
+// const { postsList } = storeToRefs(postsStore); // 這樣 `menuVisible` 會保持響應式
 import { ref } from "vue";
 
 const items = ref([

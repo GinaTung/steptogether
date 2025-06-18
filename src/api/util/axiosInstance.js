@@ -38,11 +38,22 @@ const generateUrl = (url, type = API_TYPE.USER) => {
 };
 
 // get方法
-export const $get = async (url, type = API_TYPE.USER) => {
+export const $get = async (url, type = API_TYPE.USER, config = {}) => {
   const reqUrl = generateUrl(url, type);
   // console.log(reqUrl);  // 這裡是正確的地方，打印生成的 URL
+
+  // 從 localStorage 或其他來源取得 token
+  const token = localStorage.getItem('token'); // 假設你把 token 存在 localStorage 裡
+
+  const finalConfig = {
+    headers: {
+      ...(config.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    },
+    ...config,
+  };
   try {
-    const response = await instance.get(reqUrl);
+    const response = await instance.get(reqUrl,finalConfig);
     return { error: false, data: response.data };
   } catch (error) {
     return handleError(error);

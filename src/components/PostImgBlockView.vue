@@ -1,27 +1,41 @@
 <template>
   <div class="grid gap-4 grid-cols-2">
-    <div v-for="(_, index) in 3" :key="index" class="card">
+    <div v-for="postsData in postsList" :key="postsData.id" class="card">
       <Panel class="p-5 mb-5">
         <template #header>
           <div class="flex items-center gap-2">
-            <Avatar
-              image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-              shape="circle"
-            />
+            <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
             <div class="flex flex-col">
-              <span class="font-bold">Amy Elsner</span>
-              <span> 4 Feb 2025 at 10:50</span>
+              <span class="font-bold">{{ postsData.author }}</span>
+              <span> {{ formatDateTime(postsData.createdat) }}</span>
             </div>
           </div>
         </template>
         <template #footer>
           <div class="flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-2">
-              <Button icon="pi pi-heart" rounded text></Button>
-              <Button icon="pi pi-comment" severity="secondary" rounded @click="visible = true"></Button>
-              <Button icon="pi pi-send" severity="secondary" rounded text></Button>
+              <Button :icon="postStates[postsData.id]?.isHeartVisible ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                @click="toggleHeart(postsData.id)"></Button>
+
+              <Button :icon="postStates[postsData.id]?.isCommentVisible ? 'pi pi-comments' : 'pi pi-comment'"
+                severity="secondary" rounded @click="toggleComment(postsData.id)"></Button>
+
+              <Button icon="pi pi-send" v-if="postsData.status !== '已發布'"
+                :class="{ 'filled-icon': postStates[postsData.id]?.isSendVisible }" severity="secondary"
+                @click="toggleSend(postsData.id)"></Button>
             </div>
             <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
+          </div>
+          <!-- 留言區塊 -->
+          <div v-if="postStates[postsData.id]?.isCommentVisible">
+            <div class="flex items-center">
+              <span class="me-3"><i class="pi pi-user"></i></span>
+              <Textarea v-model="value" variant="filled" rows="1" cols="30"
+                class="w-full bg-[#d0d6dd26] border-1 rounded-lg p-3 my-3" placeholder="What’s on your mind ?" />
+              <Button class="flex items-center cursor-pointer ms-3 hidden" unstyled>
+                <i class="pi pi-send"></i>
+              </Button>
+            </div>
           </div>
         </template>
         <template #icons>
@@ -32,19 +46,10 @@
             </button>
 
             <!-- 主菜單 -->
-            <ul
-              v-if="isMenuOpen"
-              :class="menuPositionClass"
-              role="menu"
-              ref="menuRef"
-              class="absolute z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg shadow-sm focus:outline-none"
-            >
-              <li
-                v-for="(item, index) in postList"
-                :key="index"
-                role="menuitem"
-                class="cursor-pointer text-slate-800 text-sm flex w-full items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
-              >
+            <ul v-if="isMenuOpen" :class="menuPositionClass" role="menu" ref="menuRef"
+              class="absolute z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg shadow-sm focus:outline-none">
+              <li v-for="(item, index) in postList" :key="index" role="menuitem"
+                class="cursor-pointer text-slate-800 text-sm flex w-full items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100">
                 <i :class="item.icon"></i>&ensp;{{ item.label }}
               </li>
             </ul>
@@ -52,41 +57,28 @@
         </template>
         <div class="my-3">
           <div class="card">
-            <Carousel
-              :value="products"
-              :numVisible="1"
-              :numScroll="1"
-              :responsiveOptions="responsiveOptions"
-              circular
-              :autoplayInterval="5000"
-            >
+            <Carousel v-if="Array.isArray(postsData.image_url) && postsData.image_url.length > 0"
+              :value="postsData.image_url" :numVisible="1" :numScroll="1" :responsiveOptions="responsiveOptions"
+              circular :autoplayInterval="5000">
               <template #item="slotProps">
                 <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
                   <div class="mb-4">
                     <div class="relative mx-auto">
-                      <img
-                        :src="slotProps.data.image"
-                        :alt="slotProps.data.name"
-                        class="w-full rounded"
-                        style="height: 300px"
-                      />
+                      <img :src="slotProps.data" class="w-full rounded" style="height: 300px" />
                     </div>
                   </div>
                 </div>
               </template>
             </Carousel>
             <div class="text-container">
+              <h3 class="ellipsis-multiline text-xl font-bold mb-2">{{ postsData.title }}</h3>
               <p class="ellipsis-multiline">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.
+                {{ postsData.content }}
               </p>
-              <Button severity="secondary" label="更多" @click="toggle" class="more-btn" />
+              <Button severity="secondary" label="more" @click="toggle" class="text-gray-700 ms-2 font-bold"
+                style="--tw-text-opacity: 1; color: rgba(239,108,0,var(--tw-text-opacity));"
+                @mouseover="e => e.target.style.color = '#EF6C00'" @mouseleave="e => e.target.style.color = 'gray'" />
             </div>
-            <p>目前頁面是：{{ pageTitle }}</p>
           </div>
         </div>
       </Panel>
@@ -97,53 +89,17 @@
 
 <script setup>
 import { ref, onMounted, computed, onBeforeUnmount } from "vue";
-import springFirst from "@/assets/images/spring_first.jpg";
-import springSecond from "@/assets/images/spring_second.jpg";
+import { storeToRefs } from "pinia";
+import { usePostsStore } from "@/stores/postsStore";
+const postsStore = usePostsStore();
+const { postsList } = storeToRefs(postsStore);
 import MessageDialogView from "./MessageDialogView.vue";
 const visible = ref(false);
-const { pageTitle } = defineProps({
-  pageTitle: String
-})
-
 
 onMounted(() => {
-  products.value = [
-    {
-      id: "1000",
-      code: "f230fh0g3",
-      name: "Bamboo Watch",
-      description: "Product Description",
-      image: springFirst,
-    },
-    {
-      id: "1001",
-      code: "nvklal433",
-      name: "Black Watch",
-      description: "Product Description",
-      image: springSecond,
-    },
-    {
-      id: "1002",
-      code: "zz21cz3c1",
-      name: "Blue Band",
-      description: "Product Description",
-      image: springFirst,
-    },
-    {
-      id: "1002",
-      code: "zz21cz3c1",
-      name: "Blue Band",
-      description: "Product Description",
-      image: springSecond,
-    },
-    {
-      id: "1001",
-      code: "nvklal433",
-      name: "Black Watch",
-      description: "Product Description",
-      image: springFirst,
-    },
-  ];
+  products.value = postsList;
+  postsStore.getPostsData()
+  document.addEventListener('click', handleClickOutside);
 });
 const menu = ref(null);
 const toggle = (event) => {
@@ -192,10 +148,43 @@ const handleClickOutside = (event) => {
     isMenuOpen.value = false;
   }
 };
+const postStates = ref({});
 
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
+const initPostState = (postId) => {
+  if (!postStates.value[postId]) {
+    postStates.value[postId] = {
+      isHeartVisible: false,
+      isCommentVisible: false,
+      isSendVisible: false,
+    };
+  }
+};
+
+const toggleHeart = (postId) => {
+  initPostState(postId);
+  postStates.value[postId].isHeartVisible = !postStates.value[postId].isHeartVisible;
+};
+
+const toggleComment = (postId) => {
+  initPostState(postId);
+  postStates.value[postId].isCommentVisible = !postStates.value[postId].isCommentVisible;
+};
+
+const toggleSend = (postId) => {
+  initPostState(postId);
+  postStates.value[postId].isSendVisible = !postStates.value[postId].isSendVisible;
+};
+
+const formatDateTime = (dateString) => {
+  const date = new Date(dateString);
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  const hh = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  const sec = String(date.getSeconds()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd} ${hh}:${min}:${sec}`;
+}
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
@@ -204,6 +193,7 @@ onBeforeUnmount(() => {
 <style>
 .text-container {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 8px;
   /* 讓文字和按鈕之間有一點間距 */

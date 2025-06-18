@@ -10,8 +10,8 @@
       </div>
     </div>
 
-    <PostImgListView v-show="changeBlock === 'List'" />
-    <PostImgBlockView v-show="changeBlock === 'Block'" />
+    <PostImgListView v-if="changeBlock === 'List'" />
+    <PostImgBlockView v-else />
   </div>
 </template>
 
