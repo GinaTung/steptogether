@@ -64,13 +64,13 @@ export const $get = async (url, type = API_TYPE.USER, config = {}) => {
 // // post方法
 export const $post = async (url, params, type = API_TYPE.USER, config = {}) => {
   const reqUrl = generateUrl(url, type);
-
+  const token = localStorage.getItem('token'); // 假設你把 token 存在 localStorage 裡
   const finalConfig = {
     headers: {
-      'Content-Type': 'application/json',
-      ...(config.headers || {})
+      ...(config.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
     },
-    ...config
+    ...config,
   };
 
   try {

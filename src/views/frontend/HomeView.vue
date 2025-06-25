@@ -6,8 +6,9 @@
         {{ pageTitle }}
       </h3>
       <div>
-        <Button icon="pi pi-microsoft" severity="secondary" @click="toggleBlock('Block')" class="mx-1" />
-        <Button icon="pi pi-list" severity="secondary" @click="toggleList('List')" class="mx-1" />
+        <Button icon="pi pi-microsoft" severity="secondary" @click="toggleBlock('Block')" class="mx-1" :style="{ color: changeBlock =='Block' ? '#EF6C00' : '' }"/>
+        <Button icon="pi pi-list" severity="secondary" @click="toggleList('List')" class="mx-1" 
+        :style="{ color: changeBlock =='List' ? '#EF6C00' : '' }"/>
       </div>
     </div>
 
