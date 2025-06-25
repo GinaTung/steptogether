@@ -103,7 +103,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </template>
-    <InputText name="initialValues.title" type="text" placeholder="想個吸引人的標題" fluid
+    <InputText v-model="initialValues.title" type="text" placeholder="想個吸引人的標題" fluid
   class="mt-3 p-2 border border-black rounded" />
     <Textarea v-model="initialValues.content" variant="filled" rows="5" cols="30"
       class="w-full bg-[#d0d6dd26] border-1 rounded-lg p-3 my-3" placeholder="今天想說什麼？" />
