@@ -28,81 +28,86 @@
       <li v-for="(item, index) in pageLikeList" :key="index" class="my-3">
         <div class="flex items-center">
           <router-link :to="item.link" class="flex items-center">
-            <img class="object-contain border border-black me-2 rounded max-w-9 max-h-9" :src="item.imgSrc"
-              :alt="item.imgAlt" />
-            <span>{{ item.text }}</span>
+            <img :src="item.imgSrc" :alt="item.imgAlt" class="fixed-size border border-black me-2 rounded" />
+
+            <span class="truncate max-w-[9rem] block" :title="item.text">{{ item.text }}</span>
           </router-link>
         </div>
       </li>
     </ul>
+
   </div>
 </template>
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted,watch } from "vue";
+import { storeToRefs } from "pinia";
+import { usePostsStore } from "@/stores/postsStore";
+import signinSocial from "@/assets/images/login-social-img.jpg";
+
+// 路由
 const route = useRoute();
 const router = useRouter();
-import signinSocial from "@/assets/images/login-social-img.jpg";
+
+// 取得 Pinia store
+const postsStore = usePostsStore();
+const { postsList } = storeToRefs(postsStore); // postsList 已經是 ref，不要再包一層
+
+// onMounted 呼叫 store 方法
+onMounted(() => {
+  postsStore.getPostsData();
+});
+
+// 側邊選單
 const menuList = ref([
   {
     label: "home",
     icon: "pi pi-home",
     route: "/",
-    command: () => {
-      router.push("/");
-    },
+    command: () => router.push("/"),
   },
   {
     label: "Friends",
     icon: "pi pi-users",
     route: "/friends",
-    command: () => {
-      router.push("/friends");
-    },
+    command: () => router.push("/friends"),
   },
   {
     label: "Videos",
     icon: "pi pi-video",
     route: "/videos",
-    command: () => {
-      router.push("/videos");
-    },
+    command: () => router.push("/videos"),
   },
   {
     label: "Learns",
     icon: "pi pi-book",
     route: "/learns",
-    command: () => {
-      router.push("/learns");
-    },
+    command: () => router.push("/learns"),
   },
   {
     label: "Arts",
     icon: "pi pi-palette",
     route: "/arts",
-    command: () => {
-      router.push("/arts");
-    },
+    command: () => router.push("/arts"),
   },
 ]);
-const pageLikeList = ref([
-  {
+
+// 喜歡的頁面
+const pageLikeList = ref([]);
+watch(postsList, (newVal) => {
+  pageLikeList.value = newVal.map(post => ({
     link: "/",
-    imgSrc: signinSocial,
-    imgAlt: "signin-social-img",
-    text: "World of Mountains",
-  },
-  {
-    link: "/",
-    imgSrc: signinSocial,
-    imgAlt: "signin-social-img",
-    text: "World of Mountains",
-  },
-  {
-    link: "/",
-    imgSrc: signinSocial,
-    imgAlt: "signin-social-img",
-    text: "World of Mountains",
-  },
-]);
+    imgSrc: (post.image_url && post.image_url.length > 0) ? post.image_url[0] : signinSocial,
+    imgAlt: post.title,
+    text: post.title
+  }));
+}, { immediate: true });
+
 </script>
+<style lang="css" scoped>
+img.fixed-size {
+  width: 48px !important;
+  height: 48px !important;
+  object-fit: cover !important;
+}
+</style>
